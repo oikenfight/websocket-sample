@@ -14,7 +14,16 @@
                         </div>
                     @endif
 
-                    You are logged in!
+                    <div class="row">
+                        <div class="col-sm-12">
+                            <ul class="list-group">
+                                <li class="list-group-item"><a href="{{ route('chat-1on1.index') }}">chat 1on1</a></li>
+                                <li class="list-group-item"><a href="{{ route('chat-1on1.index') }}">chat 1onN</a></li>
+                                <li class="list-group-item"><a href="{{ route('chat-1on1.index') }}">chat NonN</a></li>
+                            </ul>
+                        </div>
+                    </div>
+
                 </div>
             </div>
         </div>

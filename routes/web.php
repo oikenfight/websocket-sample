@@ -18,4 +18,14 @@ Route::get('/', function () {
 
 Auth::routes();
 
+
+
 Route::get('/home', 'HomeController@index')->name('home');
+
+Route::group(['middleware' => 'auth'], function () {
+    // 1 on 1
+    Route::get('/1on1', [
+        'as' => 'chat-1on1.index',
+        'uses' => _uses(\App\Http\Controllers\Chat1on1Controller::class, 'index'),
+    ]);
+});
