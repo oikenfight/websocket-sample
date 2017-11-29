@@ -15,17 +15,21 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-
 Auth::routes();
-
-
 
 Route::get('/home', 'HomeController@index')->name('home');
 
-Route::group(['middleware' => 'auth'], function () {
-    // 1 on 1
-    Route::get('/1on1', [
-        'as' => 'chat-1on1.index',
-        'uses' => _uses(\App\Http\Controllers\Chat1on1Controller::class, 'index'),
-    ]);
-});
+Route::get('/message', [
+    'as' => 'message.index',
+    'uses' => _uses(\App\Http\Controllers\MessageController::class, 'index'),
+]);
+Route::post('/message', [
+    'as' => 'message.post',
+    'uses' => _uses(\App\Http\Controllers\MessageController::class, 'post'),
+]);
+
+Route::get('/test', 'HomeController@test')->name('test');
+Route::get('/pusher', [
+    'as' => 'message.post',
+    'uses' => _uses(\App\Http\Controllers\HomeController::class, 'pusher'),
+]);

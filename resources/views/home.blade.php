@@ -17,9 +17,9 @@
                     <div class="row">
                         <div class="col-sm-12">
                             <ul class="list-group">
-                                <li class="list-group-item"><a href="{{ route('chat-1on1.index') }}">chat 1on1</a></li>
-                                <li class="list-group-item"><a href="{{ route('chat-1on1.index') }}">chat 1onN</a></li>
-                                <li class="list-group-item"><a href="{{ route('chat-1on1.index') }}">chat NonN</a></li>
+                                <li class="list-group-item"><a href="{{ route('message.index') }}">message 1on1</a></li>
+                                <li class="list-group-item"><a href="{{ route('message.index') }}">message 1onN</a></li>
+                                <li class="list-group-item"><a href="{{ route('message.index') }}">message NonN</a></li>
                             </ul>
                         </div>
                     </div>
