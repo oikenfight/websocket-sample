@@ -16,12 +16,12 @@
                                     </div>
                                     <div class="panel-body">
                                         <div class="form form-horizontal" >
-                                            <!-- select box -->
-                                            <!--<div class="form-group">-->
-                                                <!--<label class="label label-control sol-sm-1">to user</label>-->
-                                            <!--</div>-->
-                                            <!--<div class="col-sm-2">-->
-                                            <!--</div>-->
+                                             <!--select box -->
+                                            <div class="form-group">
+                                                <label class="label label-control sol-sm-1">to user</label>
+                                            </div>
+                                            <div class="col-sm-2">
+                                            </div>
 
                                             <div class="form-group">
                                                 <label class="control-label col-sm-1">Message</label>

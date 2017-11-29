@@ -15,7 +15,7 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('chat-board', require('./components/ExampleComponent.vue'));
+Vue.component('chat-board', require('./components/MessageToBloadcastOnChannelComponent.vue'));
 
 const app = new Vue({
     el: '#app'
