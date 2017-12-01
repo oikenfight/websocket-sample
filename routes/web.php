@@ -30,13 +30,13 @@ Route::post('/message', [
 ]);
 
 // message to a user
-Route::get('/message-to-user', [
-    'as' => 'message-to-user.index',
-    'uses' => _uses(\App\Http\Controllers\MessageToUserController::class, 'index'),
+Route::get('/message-to-users', [
+    'as' => 'message-to-users.index',
+    'uses' => _uses(\App\Http\Controllers\MessageToUsersController::class, 'index'),
 ]);
-Route::post('/message-to-user', [
-    'as' => 'message-to-user.post',
-    'uses' => _uses(\App\Http\Controllers\MessageToUserController::class, 'post'),
+Route::post('/message-to-users', [
+    'as' => 'message-to-users.post',
+    'uses' => _uses(\App\Http\Controllers\MessageToUsersController::class, 'post'),
 ]);
 
 // message to group users
@@ -50,9 +50,9 @@ Route::post('/message-to-group', [
 ]);
 
 // api
-Route::get('/get-all-users', [
-    'as' => 'api.get.all-users',
-    'uses' => _uses(\App\Http\Controllers\MessageToUserController::class, 'getAllUser'),
+Route::get('/get-users', [
+    'as' => 'api.get.users',
+    'uses' => _uses(\App\Http\Controllers\MessageToUsersController::class, 'getUsers'),
 ]);
 Route::get('/get-all-groups', [
     'as' => 'api.get.all-groups',

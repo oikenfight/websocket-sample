@@ -10,23 +10,39 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class PostMessageToUserEvent implements ShouldBroadcast
+class PostMessageToUsersEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    const CHANNEL_NAME = 'message-to-user-channel';
-    const EVENT_NAME = 'message-to-user-event';
+    const CHANNEL_NAME = 'message-to-users-channel.';
+    const EVENT_NAME = 'message-to-users-event.';
 
+    /**
+     * @var User
+     *
+     * auth user
+     */
     protected $user;
 
+    /**
+     * @var string
+     *
+     * posted message
+     */
     protected $message;
 
+    /**
+     * @var array
+     *
+     * selected user id to send message
+     */
     protected $toUserId;
 
     /**
-     * Create a new event instance.
-     *
-     * @return void
+     * PostMessageToUsersEvent constructor.
+     * @param User $user
+     * @param $message
+     * @param $toUsers
      */
     public function __construct(User $user, $message, $toUserId)
     {
@@ -40,7 +56,7 @@ class PostMessageToUserEvent implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new PrivateChannel(self::CHANNEL_NAME);
+        return new PrivateChannel(self::CHANNEL_NAME . $this->user->group);
     }
 
     /**
@@ -48,7 +64,7 @@ class PostMessageToUserEvent implements ShouldBroadcast
      */
     public function broadcastAs()
     {
-        return self::EVENT_NAME;
+        return self::EVENT_NAME . $this->toUserId;
     }
 
     /**
@@ -60,7 +76,6 @@ class PostMessageToUserEvent implements ShouldBroadcast
         return [
             'user' => $this->user->name,
             'message' => $this->message,
-            'toUserId' => $this->toUserId,
         ];
     }
 }
