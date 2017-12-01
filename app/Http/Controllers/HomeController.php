@@ -2,7 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Events\PusherEvent;
 use Illuminate\Http\Request;
+use Pusher\Pusher;
 
 class HomeController extends Controller
 {
@@ -24,5 +26,15 @@ class HomeController extends Controller
     public function index()
     {
         return view('home');
+    }
+
+    public function test()
+    {
+        return view('test');
+    }
+
+    public function pusher()
+    {
+        event(new PusherEvent('hogehoge'));
     }
 }
