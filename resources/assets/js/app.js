@@ -15,7 +15,7 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('message-board', require('./components/MessageToBloadcastComponent.vue'));
+Vue.component('message-board', require('./components/MessageComponent.vue'));
 // const message = new Vue({
 //     el: '#message'
 // });

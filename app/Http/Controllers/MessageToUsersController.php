@@ -40,7 +40,6 @@ class MessageToUsersController extends Controller
                 'name' => $item->name,
             ];
         }
-        // id を key とした連想配列を返却
         return $userList;
     }
 }
