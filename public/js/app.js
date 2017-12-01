@@ -1106,6 +1106,8 @@ Vue.component('message-to-user-board', __webpack_require__(72));
 //     el: '#message-to-limited'
 // });
 
+Vue.component('message-to-group-board', __webpack_require__(75));
+
 /***/ }),
 /* 12 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
@@ -48707,12 +48709,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     mounted: function mounted() {
         var _this = this;
 
-        Echo.private("message-to-user-channel", 'hoge').listen(".message-to-user-event", function (data) {
+        Echo.private("message-to-user-channel").listen(".message-to-user-event", function (data) {
             _this.messages.push(data);
         });
 
         // select box に使うユーザを取得
-        axios.get('/get-all-user').then(function (response) {
+        axios.get('/get-all-users').then(function (response) {
             _this.users = response.data;
         });
     },
@@ -48767,6 +48769,567 @@ if (false) {
   module.hot.accept()
   if (module.hot.data) {
     require("vue-hot-reload-api")      .rerender("data-v-46c8e2b2", module.exports)
+  }
+}
+
+/***/ }),
+/* 75 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(76)
+/* template */
+var __vue_template__ = __webpack_require__(77)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/MessageToGroupComponent.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-52ff064e", Component.options)
+  } else {
+    hotAPI.reload("data-v-52ff064e", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 76 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__MessageToGruop_MessageForm_vue__ = __webpack_require__(78);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__MessageToGruop_MessageForm_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__MessageToGruop_MessageForm_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__MessageToGruop_MessageList_vue__ = __webpack_require__(81);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__MessageToGruop_MessageList_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__MessageToGruop_MessageList_vue__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            message: "",
+            messages: [],
+            groups: []
+        };
+    },
+
+
+    components: {
+        message_form: __WEBPACK_IMPORTED_MODULE_0__MessageToGruop_MessageForm_vue___default.a,
+        message_list: __WEBPACK_IMPORTED_MODULE_1__MessageToGruop_MessageList_vue___default.a
+    },
+
+    mounted: function mounted() {
+        var _this = this;
+
+        // TODO: .vue ファイルでログインユーザを使いたいが、blade のようにいかず api 経由で取得しているため、いい方法ないか調べる
+        axios.get('/get-auth-user').then(function (response) {
+            var authUser = response.data;
+            _this.echoChannel(authUser);
+        });
+
+        // select box に使うユーザを取得
+        axios.get('/get-all-groups').then(function (response) {
+            _this.groups = response.data;
+        });
+    },
+
+
+    methods: {
+        echoChannel: function echoChannel(authUser) {
+            var _this2 = this;
+
+            Echo.private("message-to-group-channel." + authUser.group).listen(".message-to-group-event", function (data) {
+                _this2.messages.push(data);
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 77 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-md-10 col-md-offset-1" }, [
+        _c(
+          "div",
+          { staticClass: "panel panel-default" },
+          [
+            _vm._m(0, false, false),
+            _vm._v(" "),
+            _c("message_form", { attrs: { groups: _vm.groups } }),
+            _vm._v(" "),
+            _c("message_list", { attrs: { messages: _vm.messages } })
+          ],
+          1
+        )
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "panel-heading" }, [
+      _c("div", { staticClass: "panel-title" }, [_vm._v("Message")])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-52ff064e", module.exports)
+  }
+}
+
+/***/ }),
+/* 78 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(79)
+/* template */
+var __vue_template__ = __webpack_require__(80)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/MessageToGruop/MessageForm.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-34dd1dbc", Component.options)
+  } else {
+    hotAPI.reload("data-v-34dd1dbc", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 79 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['groups'],
+
+    data: function data() {
+        return {
+            message: "",
+            selectedGroup: ""
+        };
+    },
+
+
+    methods: {
+        send: function send() {
+            var _this = this;
+
+            axios.post('/message-to-group', { message: this.message, to_group: this.selectedGroup }).then(function (response) {
+                _this.message = '';
+                _this.selectedGroup = '';
+            });
+        }
+    }
+});
+
+/***/ }),
+/* 80 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "panel-body" }, [
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-sm-12" }, [
+        _c("div", { staticClass: "panel panel-default" }, [
+          _c("div", { staticClass: "panel-heading" }, [
+            _vm._v("\n                    Form\n                ")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "panel-body" }, [
+            _c("div", { staticClass: "form form-horizontal" }, [
+              _c("div", { staticClass: "form-group" }, [
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { staticClass: "control-label col-sm-2" }, [
+                    _vm._v("to group")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-sm-9" }, [
+                    _c("p", [
+                      _vm._v(
+                        "group 選択してみたけけど、自分の group 以外には push できなかった（当然）"
+                      )
+                    ]),
+                    _vm._v(" "),
+                    _c(
+                      "select",
+                      {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.selectedGroup,
+                            expression: "selectedGroup"
+                          }
+                        ],
+                        staticClass: "form-control",
+                        on: {
+                          change: function($event) {
+                            var $$selectedVal = Array.prototype.filter
+                              .call($event.target.options, function(o) {
+                                return o.selected
+                              })
+                              .map(function(o) {
+                                var val = "_value" in o ? o._value : o.value
+                                return val
+                              })
+                            _vm.selectedGroup = $event.target.multiple
+                              ? $$selectedVal
+                              : $$selectedVal[0]
+                          }
+                        }
+                      },
+                      [
+                        _c("option", { attrs: { disabled: "", value: "" } }, [
+                          _vm._v("選択してください")
+                        ]),
+                        _vm._v(" "),
+                        _vm._l(_vm.groups, function(group) {
+                          return _c(
+                            "option",
+                            { domProps: { value: group.group } },
+                            [
+                              _vm._v(
+                                "\n                                            " +
+                                  _vm._s(group.group) +
+                                  "\n                                        "
+                              )
+                            ]
+                          )
+                        })
+                      ],
+                      2
+                    )
+                  ])
+                ]),
+                _vm._v(" "),
+                _c("div", { staticClass: "form-group" }, [
+                  _c("label", { staticClass: "control-label col-sm-2" }, [
+                    _vm._v("Message")
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-sm-9" }, [
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.message,
+                          expression: "message"
+                        }
+                      ],
+                      staticClass: "form-control",
+                      attrs: { type: "text", placeholder: "message" },
+                      domProps: { value: _vm.message },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.message = $event.target.value
+                        }
+                      }
+                    })
+                  ])
+                ])
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "form-group" }, [
+                _c("div", { staticClass: "col-sm-offset-2 col-sm-2" }, [
+                  _c(
+                    "button",
+                    {
+                      staticClass: "btn btn-primary",
+                      on: {
+                        click: function($event) {
+                          _vm.send()
+                        }
+                      }
+                    },
+                    [_vm._v("Send")]
+                  )
+                ])
+              ])
+            ])
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-34dd1dbc", module.exports)
+  }
+}
+
+/***/ }),
+/* 81 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(82)
+/* template */
+var __vue_template__ = __webpack_require__(83)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/MessageToGruop/MessageList.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-68d64496", Component.options)
+  } else {
+    hotAPI.reload("data-v-68d64496", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 82 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['messages'],
+
+    data: function data() {
+        return {};
+    }
+});
+
+/***/ }),
+/* 83 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "panel-body" }, [
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-sm-12" }, [
+        _c("div", { staticClass: "panel panel-default" }, [
+          _c("div", { staticClass: "panel-heading" }, [
+            _vm._v("\n                    Messages\n                ")
+          ]),
+          _vm._v(" "),
+          _c("div", { staticClass: "panel-body" }, [
+            _c(
+              "ul",
+              { staticClass: "list-group" },
+              _vm._l(_vm.messages, function(item) {
+                return _c("li", { staticClass: "list-group-item" }, [
+                  _vm._v(_vm._s(item.message) + " - " + _vm._s(item.user))
+                ])
+              })
+            )
+          ])
+        ])
+      ])
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-68d64496", module.exports)
   }
 }
 
