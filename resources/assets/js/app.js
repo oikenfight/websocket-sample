@@ -24,3 +24,5 @@ Vue.component('message-to-user-board', require('./components/MessageToUserCompon
 // const message_to_limited_user = new Vue({
 //     el: '#message-to-limited'
 // });
+
+Vue.component('message-to-group-board', require('./components/MessageToGroupComponent.vue'));

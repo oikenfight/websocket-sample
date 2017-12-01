@@ -71,6 +71,19 @@
             </div>
         </nav>
 
+        @if(Auth::user())
+            <div class="container">
+                <div class="col-sm-12">
+                    <div class="row">
+                        <p>user: {{ Auth::user()->name }}</p>
+                    </div>
+                    <div class="row">
+                        <p>user: {{ Auth::user()->group }}</p>
+                    </div>
+                </div>
+            </div>
+        @endif
+
         @yield('content')
     </div>
 

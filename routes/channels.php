@@ -20,9 +20,15 @@ Broadcast::channel('message-chanel', function() {
     return true;
 });
 
-//// message to limited user channel
+//// message to a user
 //// 自分の user->id 宛に送られたイベントのみリッスンする
 Broadcast::channel('message-to-user-channel', function($user) {
-    \Log::debug($user);
+    return true;
+});
+
+// message to a group
+// 自分のグループ宛に送られたイベントのみリッスンする
+Broadcast::channel('message-to-group-channel.{group}', function($user, $group) {
+    \Log::debug($group);
     return true;
 });

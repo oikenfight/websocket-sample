@@ -31,13 +31,13 @@
         methods: {},
 
         mounted() {
-            Echo.private("message-to-user-channel", 'hoge')
+            Echo.private("message-to-user-channel")
                 .listen(".message-to-user-event", (data) => {
                     this.messages.push(data);
                 });
 
             // select box に使うユーザを取得
-            axios.get('/get-all-user')
+            axios.get('/get-all-users')
                 .then(response => {
                     this.users = response.data;
                 })
