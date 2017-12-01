@@ -15,8 +15,12 @@ window.Vue = require('vue');
  * or customize the JavaScript scaffolding to fit your unique needs.
  */
 
-Vue.component('chat-board', require('./components/MessageToBloadcastOnChannelComponent.vue'));
+Vue.component('message-board', require('./components/MessageToBloadcastComponent.vue'));
+// const message = new Vue({
+//     el: '#message'
+// });
 
-const app = new Vue({
-    el: '#app'
-});
+Vue.component('message-to-user-board', require('./components/MessageToUserComponent.vue'));
+// const message_to_limited_user = new Vue({
+//     el: '#message-to-limited'
+// });

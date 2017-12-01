@@ -37,6 +37,15 @@ class DummyUserSeeder extends Seeder
                 'name' => 'user' . $key,
                 'email' => 'sample' . $key . '@sample.com',
                 'password' => bcrypt('password'),
+                'group' => 'group1',
+            ]);
+        }
+        foreach (range(6, 10) as $key) {
+            $this->user->create([
+                'name' => 'user' . $key,
+                'email' => 'sample' . $key . '@sample.com',
+                'password' => bcrypt('password'),
+                'group' => 'group2',
             ]);
         }
     }

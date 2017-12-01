@@ -6,8 +6,7 @@
                     <div class="panel-heading">
                         <div class="panel-title">Message</div>
                     </div>
-
-                    <message_form></message_form>
+                    <message_form :users="users"></message_form>
                     <message_list :messages="messages"></message_list>
                 </div>
             </div>
@@ -17,24 +16,31 @@
 
 
 <script>
-    import message_form from './MessageToBloadcast/MessageForm.vue';
-    import message_list from './MessageToBloadcast/MessageList.vue'
+    import message_form from './MessageToUser/MessageForm.vue';
+    import message_list from './MessageToUser/MessageList.vue'
 
     export default {
         data(){
             return {
                 message: "",
                 messages: [],
+                users: [],
             }
         },
 
         methods: {},
 
         mounted() {
-            Echo.channel("message-channel")
-                .listen(".message-event", (data) => {
+            Echo.private("message-to-user-channel", 'hoge')
+                .listen(".message-to-user-event", (data) => {
                     this.messages.push(data);
                 });
+
+            // select box に使うユーザを取得
+            axios.get('/get-all-user')
+                .then(response => {
+                    this.users = response.data;
+                })
         },
 
         components: {
