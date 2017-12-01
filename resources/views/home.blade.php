@@ -18,7 +18,7 @@
                         <div class="col-sm-12">
                             <ul class="list-group">
                                 <li class="list-group-item"><a href="{{ route('message.index') }}">message to broadcast</a></li>
-                                <li class="list-group-item"><a href="{{ route('message-to-user.index') }}">message to a user</a></li>
+                                <li class="list-group-item"><a href="{{ route('message-to-users.index') }}">message to a users</a></li>
                                 <li class="list-group-item"><a href="{{ route('message-to-group.index') }}">message to a group users</a></li>
                             </ul>
                         </div>

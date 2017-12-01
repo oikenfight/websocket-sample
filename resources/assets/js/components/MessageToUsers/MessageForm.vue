@@ -13,7 +13,7 @@
                                 <div class="form-group">
                                     <label class="control-label col-sm-2">to user</label>
                                     <div class="col-sm-9">
-                                        <select v-model="selectedUser" class="form-control">
+                                        <select multiple v-model="selectedUsers" class="form-control">
                                             <option disabled value="">選択してください</option>
                                             <option v-for="user in users" v-bind:value="user.id">
                                                 {{ user.name }}
@@ -51,16 +51,16 @@
         data() {
             return {
                 message: "",
-                selectedUser: ""
+                selectedUsers: []
             }
         },
 
         methods: {
             send() {
-                axios.post('/message-to-user', {message: this.message, to_user: this.selectedUser})
+                axios.post('/message-to-users', {message: this.message, to_users: this.selectedUsers})
                     .then((response) => {
                         this.message = '';
-                        this.selectedUser = '';
+                        this.selectedUsers = [];
                     });
             }
         }

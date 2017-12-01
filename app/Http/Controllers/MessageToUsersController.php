@@ -3,11 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Entities\User;
-use App\Events\PostMessageToUserEvent;
+use App\Events\PostMessageToUsersEvent;
 use Auth;
 use Illuminate\Http\Request;
 
-class MessageToUserController extends Controller
+class MessageToUsersController extends Controller
 {
     public function __construct()
     {
@@ -16,23 +16,25 @@ class MessageToUserController extends Controller
 
     public function index()
     {
-        return view('message-to-user', []);
+        return view('message-to-users', []);
     }
 
     public function post(Request $request)
     {
-        event(new PostMessageToUserEvent(
-            Auth::user(),
-            $request->get('message'),
-            $request->get('toUserId')
-        ));
+        foreach ($request->get('to_users') as $toUserId) {
+            event(new PostMessageToUsersEvent(
+                Auth::user(),
+                $request->get('message'),
+                $toUserId
+            ));
+        }
     }
 
-    public function getAllUser()
+    public function getUsers()
     {
         /** @var array|User[] $dkBoardList */
         $userList = [];
-        foreach (User::all() as $item) {
+        foreach (User::where('group', Auth::user()->group)->get() as $item) {
             $userList[] = [
                 'id' => $item->id,
                 'name' => $item->name,
