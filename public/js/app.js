@@ -1101,6 +1101,8 @@ Vue.component('message-board', __webpack_require__(41));
 //     el: '#message'
 // });
 
+Vue.component('message-to-presence-board', __webpack_require__(81));
+
 Vue.component('message-to-users-board', __webpack_require__(53));
 // const message_to_limited_user = new Vue({
 //     el: '#message-to-limited'
@@ -49507,6 +49509,230 @@ if (false) {
 /***/ (function(module, exports) {
 
 // removed by extract-text-webpack-plugin
+
+/***/ }),
+/* 72 */,
+/* 73 */,
+/* 74 */,
+/* 75 */,
+/* 76 */,
+/* 77 */,
+/* 78 */,
+/* 79 */,
+/* 80 */,
+/* 81 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(1)
+/* script */
+var __vue_script__ = __webpack_require__(82)
+/* template */
+var __vue_template__ = __webpack_require__(83)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources/assets/js/components/MessageToPresenceComponent.vue"
+if (Component.esModule && Object.keys(Component.esModule).some(function (key) {  return key !== "default" && key.substr(0, 2) !== "__"})) {  console.error("named exports are not supported in *.vue files.")}
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-4ab534f7", Component.options)
+  } else {
+    hotAPI.reload("data-v-4ab534f7", Component.options)
+' + '  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 82 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Message_UserStatusSidebar_vue__ = __webpack_require__(43);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Message_UserStatusSidebar_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0__Message_UserStatusSidebar_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Message_MessageForm_vue__ = __webpack_require__(46);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Message_MessageForm_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1__Message_MessageForm_vue__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Message_MessageList_vue__ = __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Message_MessageList_vue___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_2__Message_MessageList_vue__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    data: function data() {
+        return {
+            authUser: [],
+            message: "",
+            messages: [],
+            users: {}
+        };
+    },
+
+
+    components: {
+        user_status_sidebar: __WEBPACK_IMPORTED_MODULE_0__Message_UserStatusSidebar_vue___default.a,
+        message_form: __WEBPACK_IMPORTED_MODULE_1__Message_MessageForm_vue___default.a,
+        message_list: __WEBPACK_IMPORTED_MODULE_2__Message_MessageList_vue___default.a
+    },
+
+    created: function created() {
+        var _this = this;
+
+        // TODO: .vue ファイルでログインユーザを使いたいが、blade のようにいかず api 経由で取得しているため、いい方法ないか調べる
+        axios.get('/get-auth-user').then(function (response) {
+            var authUser = response.data;
+        });
+
+        // sidebar 用に全ユーザを取得
+        axios.get('/get-all-users').then(function (response) {
+            _this.users = response.data;
+        });
+    },
+    beforeMount: function beforeMount() {
+        var _this2 = this;
+
+        // channel を繋いで自分宛ての event をリッスンする
+        Echo.channel("status-control-channel").listen(".call-event", function (data) {
+            // このイベントを受け取ったユーザは online であることを broadcast で知らせる
+            axios.post('/message/callback').then(function (data) {
+                console.log('callback now');
+            });
+        }).listen(".callback-event", function (data) {
+            // call-event に対して、online のユーザが callback してくる
+            _this2.users[data.userId].online = true;
+            console.log('callback coming from ' + data.userId);
+        });
+
+        // TODO: 各メッセージを受け取れるようにする
+        //            Echo.private("message-channel")
+        //                .listen(".message-event" + this.authUser.id, (data) => {
+        //                    // 全体への message が流れてくる
+        //                    this.messages.push(data);
+        //                })
+        //                .listen(".message-to-groups-event" + this.authUser.group, (data) => {
+        //                    // group 宛の message が流れてくる
+        //                    this.messages.push(data);
+        //                })
+        //                .listen(".message-to-users-event." + this.authUser.id, (data) => {
+        //                    // 自分宛ての message が流れてくる
+        //                    this.messages.push(data);
+        //                });
+    },
+    mounted: function mounted() {
+        // online-control-channel にイベントを発生させて応答を待つ
+        axios.post('/message/call').then(function (response) {
+            console.log('call first');
+        });
+    },
+    beforeDestroy: function beforeDestroy() {
+        alert('really exit ?');
+    },
+
+
+    methods: {}
+});
+
+/***/ }),
+/* 83 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "container" }, [
+    _c("div", { staticClass: "row" }, [
+      _c("div", { staticClass: "col-sm-2 sidebar" }, [
+        _c(
+          "div",
+          [_c("user_status_sidebar", { attrs: { users: _vm.users } })],
+          1
+        )
+      ]),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-sm-10" }, [
+        _c(
+          "div",
+          { staticClass: "panel panel-default" },
+          [
+            _vm._m(0, false, false),
+            _vm._v(" "),
+            _c("message_form"),
+            _vm._v(" "),
+            _c("message_list", { attrs: { messages: _vm.messages } })
+          ],
+          1
+        )
+      ])
+    ])
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "panel-heading" }, [
+      _c("div", { staticClass: "panel-title" }, [_vm._v("Message")])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-4ab534f7", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

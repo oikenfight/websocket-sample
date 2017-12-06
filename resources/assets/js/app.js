@@ -20,6 +20,8 @@ Vue.component('message-board', require('./components/MessageComponent.vue'));
 //     el: '#message'
 // });
 
+Vue.component('message-to-presence-board', require('./components/MessageToPresenceComponent.vue'));
+
 Vue.component('message-to-users-board', require('./components/MessageToUsersComponent.vue'));
 // const message_to_limited_user = new Vue({
 //     el: '#message-to-limited'
