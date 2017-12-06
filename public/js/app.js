@@ -49639,17 +49639,32 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     beforeMount: function beforeMount() {
         var _this2 = this;
 
-        // channel を繋いで自分宛ての event をリッスンする
-        Echo.channel("status-control-channel").listen(".call-event", function (data) {
-            // このイベントを受け取ったユーザは online であることを broadcast で知らせる
-            axios.post('/message/callback').then(function (data) {
-                console.log('callback now');
-            });
-        }).listen(".callback-event", function (data) {
-            // call-event に対して、online のユーザが callback してくる
-            _this2.users[data.userId].online = true;
-            console.log('callback coming from ' + data.userId);
+        // プレゼンスチャンネルへ参加
+        Echo.join('presence-user-channel').here(function (users) {
+            console.log(users);
+            users.forEach(function (user) {
+                this.users[user.id].online = true;
+            }, _this2);
+        }).joining(function (user) {
+            _this2.users[user.id].online = true;
+        }).leaving(function (user) {
+            _this2.users[user.id].online = false;
         });
+
+        //            // channel を繋いで自分宛ての event をリッスンする
+        //            Echo.channel("presence-user-channel")
+        //                .listen(".call-event", (data) => {
+        //                    // このイベントを受け取ったユーザは online であることを broadcast で知らせる
+        //                    axios.post('/message/callback')
+        //                        .then((data) => {
+        //                            console.log('callback now');
+        //                        });
+        //                })
+        //                .listen(".callback-event", (data) => {
+        //                    // call-event に対して、online のユーザが callback してくる
+        //                    this.users[data.userId].online = true;
+        //                    console.log('callback coming from ' + data.userId);
+        //                });
 
         // TODO: 各メッセージを受け取れるようにする
         //            Echo.private("message-channel")
@@ -49666,15 +49681,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         //                    this.messages.push(data);
         //                });
     },
-    mounted: function mounted() {
-        // online-control-channel にイベントを発生させて応答を待つ
-        axios.post('/message/call').then(function (response) {
-            console.log('call first');
-        });
-    },
-    beforeDestroy: function beforeDestroy() {
-        alert('really exit ?');
-    },
+    mounted: function mounted() {},
 
 
     methods: {}

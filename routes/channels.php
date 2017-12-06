@@ -34,7 +34,7 @@ Broadcast::channel('message-to-group-channel.{group}', function($user, $group) {
 
 // message to a group
 // 自分のグループ宛に送られたイベントのみリッスンする
-Broadcast::channel('presence-channel', function($user) {
+Broadcast::channel('presence-user-channel', function($user) {
     if (Auth::user()->id == $user->id) {
         return ['id' => $user->id, 'name' => $user->name];
     }
