@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Entities\User;
-use App\Events\PresenceUserEvent;
+use App\Events\MessageToPresenceUserEvent;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -21,7 +21,7 @@ class MessageToPresenceController extends Controller
 
     public function post(Request $request)
     {
-        event(new PresenceUserEvent(Auth::user()));
+        event(new MessageToPresenceUserEvent(Auth::user()));
     }
 
     public function getAllUsers()
