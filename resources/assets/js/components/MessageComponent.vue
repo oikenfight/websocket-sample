@@ -3,7 +3,6 @@
         <div class="row">
             <div class="col-sm-2 sidebar">
                 <div>
-                    <button @click="onlineCheck">オンライン状態を確認</button>
                     <user_status_sidebar :users="users"></user_status_sidebar>
                 </div>
             </div>
@@ -96,13 +95,10 @@
                 });
         },
 
-        methods: {
-            onlineCheck: function (event) {
-                // online-control-channel にイベントを発生させて応答を待つ
-                axios.post('/message/call')
-                    .then((response) => {
-                });
-            }
+        beforeDestroy() {
+            alert('really exit ?');
         },
+
+        methods: {},
     };
 </script>

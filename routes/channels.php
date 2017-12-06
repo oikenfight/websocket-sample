@@ -31,3 +31,13 @@ Broadcast::channel('message-to-users-channel.{group}', function($user, $group) {
 Broadcast::channel('message-to-group-channel.{group}', function($user, $group) {
     return true;
 });
+
+// message to a group
+// 自分のグループ宛に送られたイベントのみリッスンする
+Broadcast::channel('presence-channel', function($user) {
+    if (Auth::user()->id == $user->id) {
+        return ['id' => $user->id, 'name' => $user->name];
+    }
+    return null;
+});
+

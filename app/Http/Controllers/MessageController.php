@@ -6,6 +6,7 @@ use App\Entities\User;
 use App\Events\CallbackStatusEvent;
 use App\Events\CallStatusEvent;
 use App\Events\PostMessageEvent;
+use App\Events\StatusPresenceEvent;
 use Auth;
 use Illuminate\Http\Request;
 
