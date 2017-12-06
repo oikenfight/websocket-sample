@@ -28,6 +28,15 @@ Route::post('/message', [
     'as' => 'message.post',
     'uses' => _uses(\App\Http\Controllers\MessageController::class, 'post'),
 ]);
+Route::post('/message/call', [
+    'as' => 'message.call',
+    'uses' => _uses(\App\Http\Controllers\MessageController::class, 'call'),
+]);
+Route::post('/message/callback', [
+    'as' => 'message.callback',
+    'uses' => _uses(\App\Http\Controllers\MessageController::class, 'callback'),
+]);
+
 
 // message to a user
 Route::get('/message-to-users', [
@@ -50,6 +59,10 @@ Route::post('/message-to-group', [
 ]);
 
 // api
+Route::get('/get-all-users', [
+    'as' => 'api.get.all-users',
+    'uses' => _uses(\App\Http\Controllers\MessageController::class, 'getAllUsers'),
+]);
 Route::get('/get-users', [
     'as' => 'api.get.users',
     'uses' => _uses(\App\Http\Controllers\MessageToUsersController::class, 'getUsers'),
