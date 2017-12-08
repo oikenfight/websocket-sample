@@ -2,8 +2,9 @@
 
 namespace App\Http\Controllers;
 
+use App\Entities\Message;
 use App\Entities\User;
-use App\Events\MessageToPresenceUserEvent;
+use App\Events\MessageToPresenceUsersEvent;
 use Auth;
 use Illuminate\Http\Request;
 
@@ -21,7 +22,21 @@ class MessageToPresenceController extends Controller
 
     public function post(Request $request)
     {
-        event(new MessageToPresenceUserEvent(Auth::user()));
+        $user = Auth::user();
+        foreach ($request->get('to_users') as $toUserId) {
+            Message::create([
+                'to_user_id' => $toUserId,
+                'from_user_id' => $user->id,
+                'message' => $request->get('message'),
+            ]);
+
+
+            event(new MessageToPresenceUsersEvent(
+                Auth::user(),
+                $request->get('message'),
+                $toUserId
+            ));
+        }
     }
 
     public function getAllUsers()

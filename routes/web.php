@@ -42,7 +42,7 @@ Route::get('/message-to-presence', [
     'as' => 'message-to-presence.index',
     'uses' => _uses(\App\Http\Controllers\MessageToPresenceController::class, 'index'),
 ]);
-Route::post('/message', [
+Route::post('/message-to-presence', [
     'as' => 'message-to-presence.post',
     'uses' => _uses(\App\Http\Controllers\MessageToPresenceController::class, 'post'),
 ]);

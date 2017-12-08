@@ -8,7 +8,7 @@
                     </div>
                     <div class="panel-body">
                         <ul class="list-group">
-                            <li class="list-group-item" v-for="item in messages">{{ item.message }} - {{ item.user }}</li>
+                            <li class="list-group-item" v-for="item in messages"><a @click="$emit('show')">{{ item.message }} - {{ item.name }}</a></li>
                         </ul>
                     </div>
                 </div>
@@ -20,7 +20,7 @@
 <script>
     export default {
         props: [
-            'messages'
+            'messages',
         ],
 
         data() {

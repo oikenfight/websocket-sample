@@ -10,7 +10,7 @@ use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class MessageToPresenceUserEvent implements ShouldBroadcast
+class PresenceUserEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
@@ -27,7 +27,7 @@ class MessageToPresenceUserEvent implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct(User $user, $message)
+    public function __construct(User $user)
     {
         $this->user = $user;
     }

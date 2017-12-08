@@ -11,7 +11,7 @@
                     <div class="panel-heading">
                         <div class="panel-title">Message</div>
                     </div>
-                    <message_form></message_form>
+                    <message_form :users="users"></message_form>
                     <message_list :messages="messages"></message_list>
                 </div>
             </div>
@@ -21,33 +21,30 @@
 
 
 <script>
-    import user_status_sidebar from './Message/UserStatusSidebar.vue';
-    import message_form from './Message/MessageForm.vue';
-    import message_list from './Message/MessageList.vue';
+    import user_status_sidebar from './MessageToPresence/UserStatusSidebar.vue';
+    import message_form from './MessageToPresence/MessageForm.vue';
+    import message_list from './MessageToPresence/MessageList.vue';
 
     export default {
+        components: {
+            user_status_sidebar: user_status_sidebar,
+            message_form: message_form,
+            message_list: message_list,
+        },
+
+        props: [
+            'authUser'
+        ],
+
         data() {
             return {
-                authUser: [],
                 message: "",
                 messages: [],
                 users: {},
             };
         },
 
-        components: {
-            user_status_sidebar: user_status_sidebar,
-            message_form: message_form,
-            message_list: message_list
-        },
-
         created() {
-            // TODO: .vue ファイルでログインユーザを使いたいが、blade のようにいかず api 経由で取得しているため、いい方法ないか調べる
-            axios.get('/get-auth-user')
-                .then(response => {
-                    const authUser = response.data;
-                });
-
             // sidebar 用に全ユーザを取得
             axios.get('/get-all-users')
                 .then(response => {
@@ -55,7 +52,7 @@
                 });
         },
 
-        beforeMount() {
+        mounted() {
             // プレゼンスチャンネルへ参加
             Echo.join('presence-user-channel')
                 .here((users) => {
@@ -68,27 +65,21 @@
                 })
                 .leaving((user) => {
                     this.users[user.id].online = false;
+                }).listen('.message-to-presence-users-event.' + this.authUser.id, (data) => {
+                    this.messages.push({
+                        'message': data.message,
+                        'name': data.user.name,
+                    });
                 });
-
-
-            // TODO: 各メッセージを受け取れるようにする
-//            Echo.private("message-channel")
-//                .listen(".message-event" + this.authUser.id, (data) => {
-//                    // 全体への message が流れてくる
-//                    this.messages.push(data);
-//                })
-//                .listen(".message-to-groups-event" + this.authUser.group, (data) => {
-//                    // group 宛の message が流れてくる
-//                    this.messages.push(data);
-//                })
-//                .listen(".message-to-users-event." + this.authUser.id, (data) => {
-//                    // 自分宛ての message が流れてくる
-//                    this.messages.push(data);
-//                });
         },
 
-        mounted() {},
-
-        methods: {},
+        methods: {
+            showModal () {
+                this.$refs.myModalRef.show()
+            },
+            hideModal () {
+                this.$refs.myModalRef.hide()
+            }
+        },
     };
 </script>

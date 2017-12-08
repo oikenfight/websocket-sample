@@ -2,7 +2,7 @@
 
 @section('content')
     <div id="message-to-presence">
-        <message-to-presence-board></message-to-presence-board>
+        <message-to-presence-board v-bind:auth-user="{{ Auth::user() }}"></message-to-presence-board>
     </div>
 @endsection
 
