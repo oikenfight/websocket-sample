@@ -77,6 +77,14 @@ Route::get('/get-all-users-for-presence', [
     'as' => 'api.get.all-users-for-presence',
     'uses' => _uses(\App\Http\Controllers\MessageToPresenceController::class, 'getAllUsers'),
 ]);
+Route::get('/get-my-messages', [
+    'as' => 'api.get.my-messages',
+    'uses' => _uses(\App\Http\Controllers\MessageToPresenceController::class, 'getMyMessages'),
+]);
+Route::put('/change-read-status', [
+    'as' => 'api.change.read-status',
+    'uses' => _uses(\App\Http\Controllers\MessageToPresenceController::class, 'changeReadStatus'),
+]);
 Route::get('/get-users', [
     'as' => 'api.get.users',
     'uses' => _uses(\App\Http\Controllers\MessageToUsersController::class, 'getUsers'),

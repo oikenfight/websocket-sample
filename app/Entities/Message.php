@@ -2,10 +2,10 @@
 
 namespace App\Entities;
 
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
-use Illuminate\Foundation\Auth\User as Authenticatable;
 
-class Message extends Authenticatable
+class Message extends Model
 {
     use SoftDeletes;
 
@@ -15,7 +15,7 @@ class Message extends Authenticatable
      * @var array
      */
     protected $fillable = [
-        'from_user_id', 'to_user_id', 'message',
+        'message',
     ];
 
     /**
@@ -24,4 +24,11 @@ class Message extends Authenticatable
      * @var array
      */
     protected $hidden = [];
+
+    /** ---------------------- Relation -------------------------*/
+
+    public function messagesManagements()
+    {
+        $this->hasMany(MessageManagement::class);
+    }
 }

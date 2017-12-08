@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Entities\Message;
+use App\Entities\MessageManagement;
 use App\Entities\User;
 use App\Events\MessageToPresenceUsersEvent;
 use Auth;
@@ -23,18 +24,24 @@ class MessageToPresenceController extends Controller
     public function post(Request $request)
     {
         $user = Auth::user();
+        // create message
+        $message = Message::create([
+            'message' => $request->get('message'),
+        ]);
+
         foreach ($request->get('to_users') as $toUserId) {
-            Message::create([
+            // create MessageManagement
+            $messageManagement = MessageManagement::create([
+                'message_id' => $message->id,
                 'to_user_id' => $toUserId,
                 'from_user_id' => $user->id,
-                'message' => $request->get('message'),
             ]);
-
 
             event(new MessageToPresenceUsersEvent(
                 Auth::user(),
-                $request->get('message'),
-                $toUserId
+                $message->message,
+                $toUserId,
+                $messageManagement
             ));
         }
     }
@@ -50,8 +57,37 @@ class MessageToPresenceController extends Controller
                 'online' => false
             ];
         }
-        // id が key, name が val の配列を再編成
+        // id が key, name, online が val の配列を再編成
         $userList = array_column($userList, null, 'id');
         return $userList;
+    }
+
+    public function getMyMessages()
+    {
+        $toMeMessages = MessageManagement::where('to_user_id', Auth::user()->id)->get();
+        $messageList = [];
+        foreach ($toMeMessages as $item) {
+            /** @var MessageManagement $item */
+            $message = Message::find($item->message_id);
+            $fromUser = User::find($item->from_user_id);
+            $messageList[] = [
+                'message' => $message->message,
+                'fromUser' => $fromUser,
+                'messageManagementId' => $item->id,
+                'readStatus' => $item->read_status,
+            ];
+        }
+        return $messageList;
+    }
+
+    public function changeReadStatus(Request $request)
+    {
+        $message = $request->get('message');
+        $messageManagement = MessageManagement::find($message['messageManagementId']);
+        $messageManagement->update([
+            'read_status' => $messageManagement->switchStatus()
+        ]);
+
+        return;
     }
 }

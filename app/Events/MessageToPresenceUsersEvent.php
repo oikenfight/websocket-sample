@@ -2,6 +2,8 @@
 
 namespace App\Events;
 
+use App\Entities\Message;
+use App\Entities\MessageManagement;
 use App\Entities\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Broadcasting\PresenceChannel;
@@ -26,9 +28,7 @@ class MessageToPresenceUsersEvent implements ShouldBroadcast
     protected $user;
 
     /**
-     * @var string
-     *
-     * posted message
+     * @var
      */
     protected $message;
 
@@ -40,16 +40,22 @@ class MessageToPresenceUsersEvent implements ShouldBroadcast
     protected $toUserId;
 
     /**
+     * @var MessageManagement
+     */
+    protected $messageManagement;
+
+    /**
      * PostMessageToUsersEvent constructor.
      * @param User $user
      * @param $message
      * @param $toUsers
      */
-    public function __construct(User $user, $message, $toUserId)
+    public function __construct(User $user, $message, $toUserId, MessageManagement $messageManagement)
     {
         $this->user = $user;
         $this->message = $message;
         $this->toUserId = $toUserId;
+        $this->messageManagement = $messageManagement;
     }
 
     /**
@@ -75,8 +81,10 @@ class MessageToPresenceUsersEvent implements ShouldBroadcast
     {
         // This must always be an array. Since it will be parsed with json_encode()
         return [
-            'user' => $this->user, // auth user
+            'fromUser' => $this->user, // auth user
             'message' => $this->message, // message
+            'messageManagementId' => $this->messageManagement->id,
+            'readStatus' => false,
         ];
     }
 }

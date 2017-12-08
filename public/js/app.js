@@ -48488,7 +48488,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     data: function data() {
         return {
             message: "",
-            messages: [],
+            messages: {},
             users: {}
         };
     },
@@ -48498,6 +48498,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         // sidebar 用に全ユーザを取得
         axios.get('/get-all-users').then(function (response) {
             _this.users = response.data;
+        });
+
+        // 自分宛のメッセージを取得
+        axios.get('/get-my-messages').then(function (response) {
+            _this.messages = response.data;
         });
     },
     mounted: function mounted() {
@@ -48515,20 +48520,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         }).listen('.message-to-presence-users-event.' + this.authUser.id, function (data) {
             _this2.messages.push({
                 'message': data.message,
-                'name': data.user.name
+                'fromUser': data.fromUser,
+                'messageManagementId': data.MessageManagementId,
+                'readStatus': false
             });
         });
     },
 
 
-    methods: {
-        showModal: function showModal() {
-            this.$refs.myModalRef.show();
-        },
-        hideModal: function hideModal() {
-            this.$refs.myModalRef.hide();
-        }
-    }
+    methods: {}
 });
 
 /***/ }),
@@ -50162,12 +50162,45 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['messages'],
 
     data: function data() {
-        return {};
+        return {
+            unreadMessage: ""
+        };
+    },
+
+
+    computed: {
+        unreadCount: function unreadCount() {
+            var count = 0;
+            if (this.messages.length) {
+                this.messages.forEach(function (message) {
+                    if (!message.readStatus) {
+                        count += 1;
+                    }
+                });
+            }
+            return count;
+        }
+    },
+
+    methods: {
+        changeReadStatus: function changeReadStatus(message) {
+            axios.put('/change-read-status', { message: message }).then(function (response) {
+                message.readStatus = !message.readStatus;
+            });
+        }
     }
 });
 
@@ -50184,25 +50217,49 @@ var render = function() {
       _c("div", { staticClass: "col-sm-12" }, [
         _c("div", { staticClass: "panel panel-default" }, [
           _c("div", { staticClass: "panel-heading" }, [
-            _vm._v("\n                    Messages\n                ")
+            _vm._v("\n                    Messages\n                    "),
+            _c("div", { staticClass: "text-right" }, [
+              _c("p", [
+                _vm._v("未読メッセージ "),
+                _c("span", { staticClass: "alert" }, [
+                  _vm._v(_vm._s(_vm.unreadCount))
+                ]),
+                _vm._v(" 件")
+              ])
+            ])
           ]),
           _vm._v(" "),
           _c("div", { staticClass: "panel-body" }, [
             _c(
               "ul",
               { staticClass: "list-group" },
-              _vm._l(_vm.messages, function(item) {
+              _vm._l(_vm.messages, function(message) {
                 return _c("li", { staticClass: "list-group-item" }, [
                   _c(
                     "a",
                     {
                       on: {
                         click: function($event) {
-                          _vm.$emit("show")
+                          _vm.changeReadStatus(message)
                         }
                       }
                     },
-                    [_vm._v(_vm._s(item.message) + " - " + _vm._s(item.name))]
+                    [
+                      _c("span", {
+                        staticClass: "glyphicon glyphicon-envelope",
+                        class: {
+                          "glyphicon-envelope": !message.readStatus,
+                          "glyphicon-repeat": message.readStatus
+                        }
+                      })
+                    ]
+                  ),
+                  _vm._v(
+                    "\n                            " +
+                      _vm._s(message.message) +
+                      " - " +
+                      _vm._s(message.fromUser.name) +
+                      " -\n                        "
                   )
                 ])
               })

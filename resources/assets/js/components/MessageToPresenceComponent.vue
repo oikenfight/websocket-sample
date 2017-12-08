@@ -39,7 +39,7 @@
         data() {
             return {
                 message: "",
-                messages: [],
+                messages: {},
                 users: {},
             };
         },
@@ -49,6 +49,12 @@
             axios.get('/get-all-users')
                 .then(response => {
                     this.users = response.data;
+                });
+
+            // 自分宛のメッセージを取得
+            axios.get('/get-my-messages')
+                .then(response => {
+                    this.messages = response.data;
                 });
         },
 
@@ -68,18 +74,13 @@
                 }).listen('.message-to-presence-users-event.' + this.authUser.id, (data) => {
                     this.messages.push({
                         'message': data.message,
-                        'name': data.user.name,
+                        'fromUser': data.fromUser,
+                        'messageManagementId': data.MessageManagementId,
+                        'readStatus': false,
                     });
                 });
         },
 
-        methods: {
-            showModal () {
-                this.$refs.myModalRef.show()
-            },
-            hideModal () {
-                this.$refs.myModalRef.hide()
-            }
-        },
+        methods: {},
     };
 </script>
