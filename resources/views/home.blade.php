@@ -20,6 +20,7 @@
                                 <li class="list-group-item"><a href="{{ route('message.index') }}">message to broadcast</a></li>
                                 <li class="list-group-item"><a href="{{ route('message-to-users.index') }}">message to a users</a></li>
                                 <li class="list-group-item"><a href="{{ route('message-to-group.index') }}">message to a group users</a></li>
+                                <li class="list-group-item"><a href="{{ route('message-to-presence.index') }}">message to presence users</a></li>
                             </ul>
                         </div>
                     </div>

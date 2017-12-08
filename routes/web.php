@@ -37,6 +37,16 @@ Route::post('/message/callback', [
     'uses' => _uses(\App\Http\Controllers\MessageController::class, 'callback'),
 ]);
 
+// message to presence users
+Route::get('/message-to-presence', [
+    'as' => 'message-to-presence.index',
+    'uses' => _uses(\App\Http\Controllers\MessageToPresenceController::class, 'index'),
+]);
+Route::post('/message-to-presence', [
+    'as' => 'message-to-presence.post',
+    'uses' => _uses(\App\Http\Controllers\MessageToPresenceController::class, 'post'),
+]);
+
 
 // message to a user
 Route::get('/message-to-users', [
@@ -62,6 +72,18 @@ Route::post('/message-to-group', [
 Route::get('/get-all-users', [
     'as' => 'api.get.all-users',
     'uses' => _uses(\App\Http\Controllers\MessageController::class, 'getAllUsers'),
+]);
+Route::get('/get-all-users-for-presence', [
+    'as' => 'api.get.all-users-for-presence',
+    'uses' => _uses(\App\Http\Controllers\MessageToPresenceController::class, 'getAllUsers'),
+]);
+Route::get('/get-my-messages', [
+    'as' => 'api.get.my-messages',
+    'uses' => _uses(\App\Http\Controllers\MessageToPresenceController::class, 'getMyMessages'),
+]);
+Route::put('/change-read-status', [
+    'as' => 'api.change.read-status',
+    'uses' => _uses(\App\Http\Controllers\MessageToPresenceController::class, 'changeReadStatus'),
 ]);
 Route::get('/get-users', [
     'as' => 'api.get.users',

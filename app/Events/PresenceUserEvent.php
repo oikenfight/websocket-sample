@@ -5,18 +5,17 @@ namespace App\Events;
 use App\Entities\User;
 use Illuminate\Broadcasting\Channel;
 use Illuminate\Queue\SerializesModels;
-use Illuminate\Broadcasting\PrivateChannel;
 use Illuminate\Broadcasting\PresenceChannel;
 use Illuminate\Foundation\Events\Dispatchable;
 use Illuminate\Broadcasting\InteractsWithSockets;
 use Illuminate\Contracts\Broadcasting\ShouldBroadcast;
 
-class StatusPresenceEvent implements ShouldBroadcast
+class PresenceUserEvent implements ShouldBroadcast
 {
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
-    const CHANNEL_NAME = 'status-presence-channel';
-    const EVENT_NAME = 'status-event';
+    const CHANNEL_NAME = 'presence-user-channel';
+    const EVENT_NAME = 'presence-user-event';
 
     /**
      * @var User
